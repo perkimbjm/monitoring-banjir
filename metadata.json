@@ -1,0 +1,10 @@
+
+{
+  "name": "Monitoring Banjir - Disaster Data Collector",
+  "description": "A high-performance React application for field data collection during flood disasters, featuring EXIF extraction, real-time mapping, and automated flood damage analysis using Gemini AI.",
+  "requestFramePermissions": [
+    "camera",
+    "microphone",
+    "geolocation"
+  ]
+}
