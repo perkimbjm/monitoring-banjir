@@ -2,7 +2,8 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import { Header } from './components/Header';
 import { PhotoUpload } from './components/PhotoUpload';
-import { MapViewer } from './components/MapViewer';
+// Lazy load MapViewer as it contains heavy dependencies (maplibre-gl)
+const MapViewer = React.lazy(() => import('./components/MapViewer').then(module => ({ default: module.MapViewer })));
 import { ReportTable } from './components/ReportTable';
 import { FloodReport, UserRole } from './types';
 import * as XLSX from 'xlsx';
@@ -131,7 +132,9 @@ const App: React.FC = () => {
 
             <div className="flex-1 bg-white dark:bg-slate-800 rounded-3xl shadow-xl border border-slate-200 dark:border-slate-700 overflow-hidden min-h-[600px] flex flex-col transition-colors">
               {adminView === 'map' ? (
-                <MapViewer reports={reports} />
+                <React.Suspense fallback={<div className="w-full h-full flex items-center justify-center text-slate-500">Loading Map...</div>}>
+                  <MapViewer reports={reports} />
+                </React.Suspense>
               ) : (
                 <div className="p-6 overflow-x-auto">
                   <ReportTable reports={reports} />
