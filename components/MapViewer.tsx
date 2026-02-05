@@ -20,12 +20,19 @@ export const MapViewer: React.FC<MapViewerProps> = ({ reports }) => {
   const map = useRef<maplibregl.Map | null>(null);
   const [basemap, setBasemap] = useState<string>('OSM');
 
+  // Keep a ref to reports so we can access the latest value inside map callbacks
+  // without needing to recreate the callbacks or effects
+  const reportsRef = useRef(reports);
+  useEffect(() => {
+    reportsRef.current = reports;
+  }, [reports]);
+
   // Helper to build a minimal style object for the selected basemap
   const buildStyle = (tilesUrl: string) => ({
-    version: 8,
+    version: 8 as const,
     sources: {
       'basemap-tiles': {
-        type: 'raster',
+        type: 'raster' as const,
         tiles: [tilesUrl],
         tileSize: 256,
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -34,13 +41,36 @@ export const MapViewer: React.FC<MapViewerProps> = ({ reports }) => {
     layers: [
       {
         id: 'basemap-tiles-layer',
-        type: 'raster',
+        type: 'raster' as const,
         source: 'basemap-tiles',
         minzoom: 0,
         maxzoom: 22
       }
     ]
   });
+
+  // Centralized function to update the source data
+  const updateSource = () => {
+    if (!map.current) return;
+    const source = map.current.getSource('reports') as maplibregl.GeoJSONSource | undefined;
+    if (!source) return;
+
+    const features = reportsRef.current
+      .filter(r => r.exif.location)
+      .map(r => {
+        const { lat, lng } = r.exif.location!;
+        return {
+          type: 'Feature' as const,
+          geometry: { type: 'Point' as const, coordinates: [lng, lat] },
+          properties: {
+            previewUrl: r.previewUrl,
+            fileName: r.file.name,
+            dateTime: r.exif.dateTime || new Date(r.timestamp).toLocaleString()
+          }
+        };
+      });
+    source.setData({ type: 'FeatureCollection', features });
+  };
 
   // Initialise the map only once
   useEffect(() => {
@@ -82,6 +112,8 @@ export const MapViewer: React.FC<MapViewerProps> = ({ reports }) => {
           }
         });
       }
+      // Always update data after adding layer/source or when style reloads
+      updateSource();
     };
 
     map.current.on('load', addReportsLayer);
@@ -92,7 +124,7 @@ export const MapViewer: React.FC<MapViewerProps> = ({ reports }) => {
       map.current?.remove();
       map.current = null;
     };
-  }, []);
+  }, []); // Run once on mount
 
   // Update basemap when user selects a different option
   useEffect(() => {
@@ -109,26 +141,9 @@ export const MapViewer: React.FC<MapViewerProps> = ({ reports }) => {
     });
   }, [basemap]);
 
-  // Whenever reports change, update the GeoJSON source
+  // Whenever reports change, trigger updateSource
   useEffect(() => {
-    if (!map.current) return;
-    const source = map.current.getSource('reports') as maplibregl.GeoJSONSource | undefined;
-    if (!source) return;
-    const features = reports
-      .filter(r => r.exif.location)
-      .map(r => {
-        const { lat, lng } = r.exif.location!;
-        return {
-          type: 'Feature' as const,
-          geometry: { type: 'Point' as const, coordinates: [lng, lat] },
-          properties: {
-            previewUrl: r.previewUrl,
-            fileName: r.file.name,
-            dateTime: r.exif.dateTime || new Date(r.timestamp).toLocaleString()
-          }
-        };
-      });
-    source.setData({ type: 'FeatureCollection', features });
+    updateSource();
   }, [reports]);
 
   return (
