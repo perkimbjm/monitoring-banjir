@@ -8,8 +8,5 @@
 [[redirects]]
   from = "/api/google-sheet"
   to = "https://script.google.com/macros/s/AKfycbwXf765Dm8vSlwfMvEC1OR_tUExynqAuFQtooQyWNMtLIZhOfgLuAkuMSIaFoQNU-Mb/exec"
-  headers = {
-    "Access-Control-Allow-Origin" = "*"
-  }
   status = 200
   force = true
