@@ -74,8 +74,19 @@ export const PhotoUpload: React.FC<PhotoUploadProps> = ({ onReportsAdded, onUpda
     onUpdateReport(report.id, { status: 'uploading' });
 
     try {
-      // Use the actual API to upload to Drive
-      const result = await uploadPhotoToDrive(report.file);
+      // Prepare metadata for the sheet
+      const metadata = {
+        id: report.id,
+        latitude: report.exif.location?.lat || '',
+        longitude: report.exif.location?.lng || '',
+        altitude: '', // ExifReader might not capture altitude easily without parsing full tags
+        camera_maker: report.exif.make || '',
+        camera_model: report.exif.model || '',
+        tanggal_pengambilan: report.exif.dateTime || new Date().toISOString()
+      };
+
+      // Use the actual API to upload to Drive and record in Sheet
+      const result = await uploadPhotoToDrive(report.file, metadata);
       
       console.log('Upload success:', result);
 

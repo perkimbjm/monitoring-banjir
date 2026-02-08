@@ -38,7 +38,7 @@ export const fetchSheetData = async (): Promise<PhotoMetadata[]> => {
   }
 };
 
-export const uploadPhotoToDrive = async (file: File): Promise<any> => {
+export const uploadPhotoToDrive = async (file: File, metadata: any = {}): Promise<any> => {
   if (API_URL.includes('PASTE_YOUR_')) {
      throw new Error("API_URL not configured");
   }
@@ -60,7 +60,8 @@ export const uploadPhotoToDrive = async (file: File): Promise<any> => {
         const payload = {
           base64: base64String,
           mimeType: file.type,
-          fileName: file.name
+          fileName: file.name,
+          ...metadata
         };
 
         const response = await fetch(API_URL, {
