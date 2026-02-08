@@ -75,7 +75,14 @@ export const uploadPhotoToDrive = async (file: File): Promise<any> => {
            throw new Error(`Upload failed: ${response.statusText}`);
         }
 
-        const result = await response.json();
+        const responseText = await response.text();
+        let result;
+        try {
+          result = JSON.parse(responseText);
+        } catch (e) {
+          throw new Error(`Server returned non-JSON response: ${responseText.substring(0, 100)}...`);
+        }
+
         if (result.status === 'error') {
           throw new Error(result.message);
         }
