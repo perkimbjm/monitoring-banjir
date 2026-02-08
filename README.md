@@ -278,12 +278,16 @@ function extractExif(file) {
 
   // Contoh penggunaan Advanced Drive API (jika diaktifkan di Services +)
   try {
-    const driveFile = Drive.Files.get(file.getId());
-    if (driveFile.imageMediaMetadata) {
+    // PENTING: Untuk Drive API v3, parameter 'fields' WAJIB disertakan untuk mendapatkan metadata gambar
+    const driveFile = Drive.Files.get(file.getId(), {fields: 'imageMediaMetadata'});
+    
+    if (driveFile && driveFile.imageMediaMetadata) {
       const exif = driveFile.imageMediaMetadata;
       if (exif.location) {
-        metadata.lat = exif.location.latitude;
-        metadata.lng = exif.location.longitude;
+        // Paksa format teks dengan titik (.) agar konsisten (misal: -7.12345)
+        // String(val).replace(',', '.') menangani kemungkinan output lokal atau number
+        metadata.lat = "'" + String(exif.location.latitude).replace(',', '.');
+        metadata.lng = "'" + String(exif.location.longitude).replace(',', '.');
         metadata.altitude = exif.location.altitude;
       }
       metadata.make = exif.cameraMake;
