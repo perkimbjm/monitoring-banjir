@@ -1,1 +1,15 @@
 @import "tailwindcss";
+
+/* Pastikan container Leaflet memiliki dimensi */
+.leaflet-container {
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+}
+
+/* FIX UTAMA: Override reset global Tailwind yang merusak tile peta */
+.leaflet-pane img,
+.leaflet-tile-container img {
+  max-width: none !important;
+  max-height: none !important;
+}

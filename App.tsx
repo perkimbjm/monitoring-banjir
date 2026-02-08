@@ -3,9 +3,10 @@ import React, { useState, useCallback, useEffect } from 'react';
 import { Header } from './components/Header';
 import { PhotoUpload } from './components/PhotoUpload';
 // Lazy load MapViewer as it contains heavy dependencies (maplibre-gl)
-const MapViewer = React.lazy(() => import('./components/MapViewer').then(module => ({ default: module.MapViewer })));
+import { MapViewer } from './components/MapViewer';
 import { ReportTable } from './components/ReportTable';
 import { FloodReport, UserRole } from './types';
+import { fetchSheetData } from './api';
 import * as XLSX from 'xlsx';
 import { 
   Activity, 
@@ -39,6 +40,63 @@ const App: React.FC = () => {
       localStorage.setItem('theme', 'light');
     }
   }, [isDark]);
+
+  // Load data from Google Sheet on mount
+  useEffect(() => {
+    const loadData = async () => {
+      try {
+        const data = await fetchSheetData();
+        const loadedReports: FloodReport[] = data.map(item => {
+          // Robust coordinate parsing
+          const parseCoord = (val: string | number) => {
+             if (typeof val === 'number') return val;
+             if (!val) return undefined;
+             // Remove leading quote (common in Sheets) and fix comma decimal
+             const cleanVal = String(val).replace(/^'/, '').replace(',', '.').trim();
+             if (cleanVal === '') return undefined;
+             const num = Number(cleanVal);
+             return isNaN(num) ? undefined : num;
+          };
+
+          const lat = parseCoord(item.latitude);
+          const lng = parseCoord(item.longitude);
+
+          // Extract Drive ID if possible
+          const driveIdMatch = item.link_drive?.match(/\/d\/(.+?)\//);
+          const driveId = driveIdMatch ? driveIdMatch[1] : undefined;
+
+          return {
+            id: item.id || Math.random().toString(36),
+            // Mock File object for compatibility
+            file: { name: item.nama_file || 'Untitled', type: 'image/jpeg' } as File,
+            // Convert View Link to something usable? For now keep original link
+            previewUrl: item.link_drive, 
+            exif: {
+              make: item.camera_maker,
+              model: item.camera_model,
+              dateTime: item.tanggal_pengambilan,
+              location: (lat !== undefined && lng !== undefined && !isNaN(lat) && !isNaN(lng)) ? {
+                lat,
+                lng
+              } : undefined
+            },
+            timestamp: new Date(item.tanggal_pengambilan || Date.now()).getTime(),
+            status: 'completed',
+            driveFileId: driveId
+          } as FloodReport;
+        });
+
+        setReports(prev => {
+             const existingIds = new Set(prev.map(r => r.id));
+             const uniqueNew = loadedReports.filter(r => !existingIds.has(r.id));
+             return [...prev, ...uniqueNew];
+        });
+      } catch (err) {
+        console.error("Failed to load sheet data", err);
+      }
+    };
+    loadData();
+  }, []);
 
   const toggleTheme = useCallback(() => {
     setIsDark(prev => !prev);
@@ -132,9 +190,7 @@ const App: React.FC = () => {
 
             <div className="flex-1 bg-white dark:bg-slate-800 rounded-3xl shadow-xl border border-slate-200 dark:border-slate-700 overflow-hidden min-h-[600px] flex flex-col transition-colors">
               {adminView === 'map' ? (
-                <React.Suspense fallback={<div className="w-full h-full flex items-center justify-center text-slate-500">Loading Map...</div>}>
-                  <MapViewer reports={reports} />
-                </React.Suspense>
+                <MapViewer reports={reports} />
               ) : (
                 <div className="p-6 overflow-x-auto">
                   <ReportTable reports={reports} />

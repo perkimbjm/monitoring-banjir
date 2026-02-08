@@ -32,12 +32,15 @@ export default defineConfig(({ mode }) => {
         rollupOptions: {
           output: {
             manualChunks: {
-              'vendor-maplibre': ['maplibre-gl'],
+              'vendor-leaflet': ['leaflet', 'react-leaflet'],
               'vendor-xlsx': ['xlsx'],
               'vendor-genai': ['@google/genai'],
             }
           }
         }
+      },
+      esbuild: {
+        target: "es2022"
       }
     };
 });
