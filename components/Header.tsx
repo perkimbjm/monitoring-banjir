@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Waves, Zap, Sun, Moon, UserCircle, ShieldCheck } from 'lucide-react';
+import { Waves, Sun, Moon, UserCircle, ShieldCheck } from 'lucide-react';
 import { UserRole } from '../types';
 
 interface HeaderProps {
@@ -70,11 +70,11 @@ export const Header: React.FC<HeaderProps> = ({ toggleTheme, isDark, role, setRo
           
           <div className="flex items-center gap-3 pl-1">
              <div className="flex flex-col items-end text-right hidden lg:flex">
-               <span className="text-xs font-bold text-white leading-tight">Sistem Informasi</span>
+               <span className="text-xs font-bold text-white leading-tight">BPBD</span>
                <span className="text-[10px] text-indigo-200">Kota Banjarmasin</span>
              </div>
-             <div className="w-10 h-10 bg-gradient-to-br from-orange-400 to-pink-500 rounded-2xl flex items-center justify-center text-white shadow-lg border border-white/20 animate-in fade-in zoom-in duration-500">
-               <Zap size={20} fill="currentColor" className="text-white" />
+             <div className="w-10 h-10 flex items-center justify-center animate-in fade-in zoom-in duration-500 overflow-hidden transition-all hover:scale-150 hover:shadow-2xl cursor-pointer group">
+               <img src="/assets/logo.webp" alt="BPBD Logo" className="w-full h-full object-contain p-0.5 transition-transform group-hover:scale-110" />
              </div>
           </div>
         </div>

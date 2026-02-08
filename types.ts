@@ -25,6 +25,7 @@ export interface FloodReport {
   timestamp: number;
   status: UploadStatus;
   driveFileId?: string;
+  regu?: string;
 }
 
 export interface MapMarker {

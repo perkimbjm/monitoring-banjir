@@ -1,5 +1,26 @@
 @import "tailwindcss";
 
+/* Ensure dark mode applies to html and body - Force override */
+html {
+  background-color: #f8fafc !important; /* slate-50 */
+  transition: background-color 0.3s ease;
+}
+
+html.dark {
+  background-color: #0f172a !important; /* slate-900 */
+}
+
+body {
+  background-color: #f8fafc !important; /* slate-50 */
+  color: #0f172a; /* slate-900 */
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+html.dark body {
+  background-color: #0f172a !important; /* slate-900 */
+  color: #f8fafc; /* slate-50 */
+}
+
 /* Pastikan container Leaflet memiliki dimensi */
 .leaflet-container {
   width: 100%;
@@ -12,4 +33,123 @@
 .leaflet-tile-container img {
   max-width: none !important;
   max-height: none !important;
+}
+
+/* Fullscreen Control Styling */
+.leaflet-control-fullscreen {
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 1px 5px rgba(0,0,0,0.15);
+  border: 2px solid rgba(0,0,0,0.1);
+  margin-top: 10px !important;
+}
+
+.leaflet-control-fullscreen a {
+  background-color: white;
+  width: 34px;
+  height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  transition: all 0.2s;
+}
+
+.leaflet-control-fullscreen a:hover {
+  background-color: #f8fafc;
+  transform: scale(1.05);
+}
+
+.leaflet-control-fullscreen-button {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%23334155' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3'/%3E%3C/svg%3E") !important;
+  background-size: 20px 20px !important;
+  background-position: center !important;
+  background-repeat: no-repeat !important;
+}
+
+.leaflet-fullscreen-on .leaflet-control-fullscreen-button {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%232563eb' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M8 3v3a2 2 0 0 1-2 2H3m18 0h-3a2 2 0 0 1-2-2V3m0 18v-3a2 2 0 0 1 2-2h3M3 16h3a2 2 0 0 1 2 2v3'/%3E%3C/svg%3E") !important;
+}
+
+/* Dark mode support */
+.dark .leaflet-control-fullscreen {
+  background-color: #1e293b;
+  border-color: rgba(255,255,255,0.2);
+}
+
+.dark .leaflet-control-fullscreen a {
+  background-color: #1e293b;
+}
+
+.dark .leaflet-control-fullscreen a:hover {
+  background-color: #334155;
+}
+
+.dark .leaflet-control-fullscreen-button {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%23e2e8f0' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3'/%3E%3C/svg%3E") !important;
+}
+
+.dark .leaflet-fullscreen-on .leaflet-control-fullscreen-button {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%2360a5fa' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M8 3v3a2 2 0 0 1-2 2H3m18 0h-3a2 2 0 0 1-2-2V3m0 18v-3a2 2 0 0 1 2-2h3M3 16h3a2 2 0 0 1 2 2v3'/%3E%3C/svg%3E") !important;
+}
+
+/* Leaflet controls dark mode */
+.dark .leaflet-control-zoom a,
+.dark .leaflet-control-layers-toggle {
+  background-color: #1e293b !important;
+  color: #e2e8f0 !important;
+  border-color: rgba(255,255,255,0.2) !important;
+}
+
+.dark .leaflet-control-zoom a:hover,
+.dark .leaflet-control-layers-toggle:hover {
+  background-color: #334155 !important;
+}
+
+.dark .leaflet-control-layers {
+  background-color: #1e293b !important;
+  color: #e2e8f0 !important;
+  border-color: rgba(255,255,255,0.2) !important;
+}
+
+.dark .leaflet-control-layers-base label,
+.dark .leaflet-control-layers-overlays label {
+  color: #e2e8f0 !important;
+}
+
+.dark .leaflet-bar {
+  border: 2px solid rgba(255,255,255,0.2) !important;
+}
+
+/* Fullscreen mode adjustments */
+.leaflet-fullscreen-on {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+/* Notification animations */
+@keyframes slide-in-from-top {
+  from {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slide-out-to-top {
+  from {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+}
+
+.animate-in {
+  animation: slide-in-from-top 0.3s ease-out;
 }

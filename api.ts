@@ -12,6 +12,7 @@ export interface PhotoMetadata {
   altitude: number | string;
   camera_maker: string;
   camera_model: string;
+  regu: string;
   timestamp_ekstraksi: string;
   [key: string]: any; 
 }
@@ -95,4 +96,42 @@ export const uploadPhotoToDrive = async (file: File, metadata: any = {}): Promis
     };
     reader.onerror = (error) => reject(error);
   });
+};
+
+export const deletePhotoFromDrive = async (id: string): Promise<any> => {
+  if (API_URL.includes('PASTE_YOUR_')) {
+     throw new Error("API_URL not configured");
+  }
+
+  try {
+    const payload = {
+      action: 'delete',
+      id: id
+    };
+
+    const response = await fetch(API_URL, {
+      method: 'POST',
+      body: JSON.stringify(payload),
+    });
+
+    if (!response.ok) {
+      throw new Error(`Delete failed: ${response.statusText}`);
+    }
+
+    const responseText = await response.text();
+    let result;
+    try {
+      result = JSON.parse(responseText);
+    } catch (e) {
+      throw new Error(`Server returned non-JSON response: ${responseText.substring(0, 100)}...`);
+    }
+
+    if (result.status === 'error') {
+      throw new Error(result.message);
+    }
+    
+    return result;
+  } catch (err) {
+    throw err;
+  }
 };
