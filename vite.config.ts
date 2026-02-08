@@ -8,6 +8,14 @@ export default defineConfig(({ mode }) => {
       server: {
         port: 5173,
         host: '0.0.0.0',
+        proxy: {
+          '/api/google-sheet': {
+            target: 'https://script.google.com',
+            changeOrigin: true,
+            secure: false,      
+            rewrite: (path) => path.replace(/^\/api\/google-sheet/, '/macros/s/AKfycbwXf765Dm8vSlwfMvEC1OR_tUExynqAuFQtooQyWNMtLIZhOfgLuAkuMSIaFoQNU-Mb/exec'),
+          },
+        },
       },
       plugins: [react()],
       define: {

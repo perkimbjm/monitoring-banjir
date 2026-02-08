@@ -1,6 +1,12 @@
 [build]
-  command = "npm ci && npm run build"
+  command = "npm ci --include=optional && npm run build"
   publish = "dist"
 
 [build.environment]
   NODE_VERSION = "20"
+
+[[redirects]]
+  from = "/api/google-sheet"
+  to = "https://script.google.com/macros/s/AKfycbwXf765Dm8vSlwfMvEC1OR_tUExynqAuFQtooQyWNMtLIZhOfgLuAkuMSIaFoQNU-Mb/exec"
+  status = 200
+  force = true

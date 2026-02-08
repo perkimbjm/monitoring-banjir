@@ -1,7 +1,6 @@
 
-// Ganti dengan URL Web App dari langkah Deploy Apps Script
-// Contoh: 'https://script.google.com/macros/s/AKfycby.../exec'
-export const API_URL = 'https://script.google.com/macros/s/AKfycbwXf765Dm8vSlwfMvEC1OR_tUExynqAuFQtooQyWNMtLIZhOfgLuAkuMSIaFoQNU-Mb/exec';
+// Menggunakan proxy untuk menghindari masalah CORS
+export const API_URL = '/api/google-sheet';
 
 export interface PhotoMetadata {
   id: string;
