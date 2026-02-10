@@ -6,22 +6,25 @@ import { MapViewer } from './components/MapViewer';
 import { ReportTable } from './components/ReportTable';
 import { FloodReport, UserRole } from './types';
 import { fetchSheetData } from './api';
+import { applyServiceWorkerUpdate } from './pwa';
 import * as XLSX from 'xlsx';
-import { 
-  Activity, 
-  UserCircle, 
+import {
+  Activity,
+  UserCircle,
   ShieldCheck,
   Download,
   PlusCircle,
   Map as MapIcon,
   Table as TableIcon,
-  CloudUpload
+  CloudUpload,
+  RefreshCw
 } from 'lucide-react';
 
 const App: React.FC = () => {
   const [reports, setReports] = useState<FloodReport[]>([]);
   const [role, setRole] = useState<UserRole>('surveyor');
   const [adminView, setAdminView] = useState<'map' | 'table'>('map');
+  const [swUpdateAvailable, setSwUpdateAvailable] = useState(false);
   const [isDark, setIsDark] = useState(() => {
     if (typeof window !== 'undefined') {
       const savedTheme = localStorage.getItem('theme');
@@ -43,6 +46,13 @@ const App: React.FC = () => {
       localStorage.setItem('theme', 'light');
     }
   }, [isDark]);
+
+  // Listen for service worker updates
+  useEffect(() => {
+    const handleSwUpdate = () => setSwUpdateAvailable(true);
+    window.addEventListener('sw-update-available', handleSwUpdate);
+    return () => window.removeEventListener('sw-update-available', handleSwUpdate);
+  }, []);
 
   // Load data from Google Sheet on mount
   useEffect(() => {
@@ -196,7 +206,20 @@ const App: React.FC = () => {
 
   return (
     <div className="min-h-screen flex flex-col bg-slate-50 dark:bg-slate-900 transition-colors duration-300">
-      
+
+      {swUpdateAvailable && (
+        <div className="bg-blue-600 text-white px-4 py-3 flex items-center justify-center gap-3 text-sm z-50">
+          <RefreshCw size={16} className="animate-spin" />
+          <span className="font-medium">Versi baru tersedia!</span>
+          <button
+            onClick={() => applyServiceWorkerUpdate()}
+            className="bg-white text-blue-600 px-3 py-1 rounded-md font-bold text-xs hover:bg-blue-50 transition-colors"
+          >
+            Perbarui
+          </button>
+        </div>
+      )}
+
       <Header toggleTheme={toggleTheme} isDark={isDark} role={role} setRole={setRole} />
       
       <main className="flex-1 flex flex-col">

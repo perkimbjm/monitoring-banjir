@@ -5,6 +5,20 @@
 [build.environment]
   NODE_VERSION = "20"
 
+# Service worker must be served with no-cache to ensure updates propagate
+[[headers]]
+  for = "/sw.js"
+  [headers.values]
+    Cache-Control = "no-cache, no-store, must-revalidate"
+    Service-Worker-Allowed = "/"
+
+# Manifest should be cacheable but revalidated
+[[headers]]
+  for = "/manifest.json"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+    Content-Type = "application/manifest+json"
+
 [[redirects]]
   from = "/api/google-sheet"
   to = "https://script.google.com/macros/s/AKfycbwXf765Dm8vSlwfMvEC1OR_tUExynqAuFQtooQyWNMtLIZhOfgLuAkuMSIaFoQNU-Mb/exec"
