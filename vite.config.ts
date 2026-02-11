@@ -32,7 +32,7 @@ export default defineConfig(({ mode }) => {
         rollupOptions: {
           output: {
             manualChunks: {
-              'vendor-leaflet': ['leaflet', 'react-leaflet'],
+              'vendor-maplibre': ['maplibre-gl'],
               'vendor-xlsx': ['xlsx'],
               'vendor-genai': ['@google/genai'],
             }

@@ -6,8 +6,6 @@ const DYNAMIC_CACHE = 'dynamic-v1';
 const PRECACHE_URLS = [
   '/',
   '/manifest.json',
-  '/Control.FullScreen.css',
-  '/Control.FullScreen.js',
 ];
 
 // Install event - precache core assets
@@ -82,7 +80,7 @@ self.addEventListener('fetch', (event) => {
             }
             return networkResponse;
           }).catch(() => {
-            // Return nothing if tile fetch fails - Leaflet handles missing tiles
+            // Return nothing if tile fetch fails - MapLibre handles missing tiles
             return new Response('', { status: 408 });
           });
         });
@@ -91,8 +89,8 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
-  // Leaflet CSS from CDN - stale while revalidate
-  if (url.hostname === 'unpkg.com' && url.pathname.includes('leaflet')) {
+  // MapLibre CSS from CDN - stale while revalidate
+  if (url.hostname === 'unpkg.com' && url.pathname.includes('maplibre-gl')) {
     event.respondWith(
       caches.open(STATIC_CACHE).then((cache) => {
         return cache.match(request).then((cachedResponse) => {

@@ -167,10 +167,19 @@ export const ReportTable: React.FC<ReportTableProps> = ({ reports, onDelete }) =
                     alt="Thumb"
                     loading="lazy"
                     onError={(e) => {
-                      // Fallback ke previewUrl jika thumbnail Drive gagal
                       const target = e.target as HTMLImageElement;
-                      if (target.src !== report.previewUrl) {
+                      console.log('Table thumbnail error:', target.src);
+                      
+                      // Jika sedang menggunakan Drive thumbnail, coba previewUrl
+                      if (report.driveFileId && target.src.includes('drive.google.com')) {
+                        console.log('Fallback to previewUrl:', report.previewUrl);
                         target.src = report.previewUrl;
+                      } else {
+                        // Jika previewUrl juga gagal, sembunyikan gambar
+                        console.log('Both sources failed');
+                        target.style.display = 'none';
+                        target.parentElement!.style.backgroundColor = '#f1f5f9';
+                        target.parentElement!.innerHTML = '<div class="w-full h-full flex items-center justify-center text-slate-400"><svg width="24" height="24" fill="currentColor" viewBox="0 0 24 24"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg></div>';
                       }
                     }}
                   />

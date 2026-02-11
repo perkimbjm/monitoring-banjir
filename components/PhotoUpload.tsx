@@ -22,6 +22,18 @@ export const PhotoUpload: React.FC<PhotoUploadProps> = ({ onReportsAdded, onUpda
   const [isDragging, setIsDragging] = useState(false);
   const [uploadProgress, setUploadProgress] = useState<{ [key: string]: number }>({});
 
+  // Cleanup URL objects when component unmounts or reports change
+  useEffect(() => {
+    return () => {
+      // Cleanup all preview URLs when component unmounts
+      reports.forEach(report => {
+        if (report.previewUrl && report.previewUrl.startsWith('blob:')) {
+          URL.revokeObjectURL(report.previewUrl);
+        }
+      });
+    };
+  }, [reports]);
+
   useEffect(() => {
     const checkMobile = () => {
       const userAgent = navigator.userAgent || navigator.vendor || (window as any).opera;
@@ -37,6 +49,7 @@ export const PhotoUpload: React.FC<PhotoUploadProps> = ({ onReportsAdded, onUpda
   }, []);
 
   const processFile = async (file: File): Promise<FloodReport> => {
+    // Buat preview URL yang akan di-cleanup nanti
     const previewUrl = URL.createObjectURL(file);
     let exifData: ExifData = {};
 
@@ -358,12 +371,16 @@ export const PhotoUpload: React.FC<PhotoUploadProps> = ({ onReportsAdded, onUpda
                       target.parentElement?.classList.remove('animate-pulse');
                     }}
                     onError={(e) => {
-                      // Fallback ke previewUrl jika Drive thumbnail gagal
                       const target = e.target as HTMLImageElement;
-                      if (target.src !== report.previewUrl) {
+                      console.log('Image load error:', target.src);
+                      
+                      // Jika sedang menggunakan Drive thumbnail, coba previewUrl
+                      if (report.driveFileId && target.src.includes('drive.google.com')) {
+                        console.log('Fallback to previewUrl:', report.previewUrl);
                         target.src = report.previewUrl;
                       } else {
                         // Jika previewUrl juga gagal, tampilkan placeholder
+                        console.log('Both sources failed, showing placeholder');
                         target.style.display = 'none';
                         const placeholder = target.nextElementSibling as HTMLElement;
                         if (placeholder) placeholder.style.display = 'flex';
