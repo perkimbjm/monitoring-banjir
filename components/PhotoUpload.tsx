@@ -330,8 +330,8 @@ export const PhotoUpload: React.FC<PhotoUploadProps> = ({ onReportsAdded, onUpda
       {reports.length > 0 && (
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4 p-6 bg-blue-50 dark:bg-blue-900/30 rounded-2xl border border-blue-100 dark:border-blue-700">
           <div>
-            <h4 className="font-bold text-blue-900 dark:text-blue-200">Sinkronisasi Data</h4>
-            <p className="text-xs text-blue-700 dark:text-blue-300">Terdapat {reports.filter(r => r.status === 'pending').length} foto yang belum dikirim ke Google Drive.</p>
+            <h4 className="font-bold text-blue-600 dark:text-blue-500">Sinkronisasi Data</h4>
+            <p className="text-xs text-blue-700 dark:text-blue-400">Terdapat {reports.filter(r => r.status === 'pending').length} foto yang belum dikirim ke Google Drive.</p>
           </div>
           <button 
             onClick={handleSubmitAll}
@@ -345,7 +345,7 @@ export const PhotoUpload: React.FC<PhotoUploadProps> = ({ onReportsAdded, onUpda
       )}
 
       <div className="space-y-4">
-        <h3 className="text-sm font-bold uppercase text-slate-400 tracking-widest flex items-center gap-2">
+        <h3 className="text-sm font-bold uppercase text-slate-600 tracking-widest flex items-center gap-2">
            <ImageIcon size={16} /> Daftar Monitoring Lapangan
         </h3>
         {reports.length === 0 ? (

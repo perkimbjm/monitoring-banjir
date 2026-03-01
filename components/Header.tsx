@@ -12,7 +12,7 @@ interface HeaderProps {
 
 export const Header: React.FC<HeaderProps> = ({ toggleTheme, isDark, role, setRole }) => {
   return (
-    <header className="bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 dark:from-indigo-900 dark:via-purple-900 dark:to-pink-900 text-white sticky top-0 z-40 shadow-xl transition-all duration-300">
+    <header className="bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 dark:from-indigo-900 dark:via-purple-900 dark:to-pink-900 text-white sticky top-0 z-[999] shadow-xl transition-all duration-300">
       <div className="container mx-auto px-4 h-20 flex items-center justify-between gap-4">
         
         {/* Brand Section */}

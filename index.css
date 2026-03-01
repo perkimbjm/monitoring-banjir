@@ -1,82 +1,20 @@
 @import "tailwindcss";
 
-/* Ensure dark mode applies to html and body - Force override */
-html {
-  background-color: #f8fafc !important; /* slate-50 */
-  transition: background-color 0.3s ease;
-}
-
-html.dark {
-  background-color: #0f172a !important; /* slate-900 */
-}
-
-body {
-  background-color: #f8fafc !important; /* slate-50 */
-  color: #0f172a; /* slate-900 */
-  transition: background-color 0.3s ease, color 0.3s ease;
-}
-
-html.dark body {
-  background-color: #0f172a !important; /* slate-900 */
-  color: #f8fafc; /* slate-50 */
-}
-
-/* MapLibre GL container styling */
-.maplibregl-map {
-  width: 100%;
+html,
+body,
+#root {
   height: 100%;
-  z-index: 0;
 }
 
-/* MapLibre GL controls styling */
-.maplibregl-ctrl-group {
-  background-color: white;
-  border-radius: 8px;
-  box-shadow: 0 1px 5px rgba(0,0,0,0.15);
-  border: 2px solid rgba(0,0,0,0.1);
+html {
+  background: transparent;
 }
 
-.maplibregl-ctrl-group button {
-  background-color: white;
-  width: 34px;
-  height: 34px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 6px;
-  transition: all 0.2s;
-}
 
-.maplibregl-ctrl-group button:hover {
-  background-color: #f8fafc;
-  transform: scale(1.05);
-}
 
-/* Dark mode support for MapLibre */
-.dark .maplibregl-ctrl-group {
-  background-color: #1e293b;
-  border-color: rgba(255,255,255,0.2);
-}
-
-.dark .maplibregl-ctrl-group button {
-  background-color: #1e293b;
-  color: #e2e8f0;
-}
-
-.dark .maplibregl-ctrl-group button:hover {
-  background-color: #334155;
-}
-
-.dark .maplibregl-popup-content {
-  background-color: #1e293b !important;
-  color: #e2e8f0 !important;
-}
-
-.dark .maplibregl-popup-tip {
-  border-top-color: #1e293b !important;
-}
-
-/* Notification animations */
+/* =========================
+   Notification animations
+   ========================= */
 @keyframes slide-in-from-top {
   from {
     transform: translateY(-100%);
@@ -101,4 +39,461 @@ html.dark body {
 
 .animate-in {
   animation: slide-in-from-top 0.3s ease-out;
+}
+
+body {
+  transition: background-color 0.3s ease, color 0.3s ease;
+  background-color: #f8fafc !important; /* slate-50 - default light mode */
+  color: #0f172a !important; /* slate-900 - default light mode */
+}
+
+html.dark body {
+  background-color: #0f172a !important; /* slate-900 */
+  color: #f8fafc !important; /* slate-50 */
+}
+
+/* Fallback untuk memastikan dark mode bekerja */
+.dark body {
+  background-color: #0f172a !important;
+  color: #f8fafc !important;
+}
+
+/* Override Tailwind jika diperlukan */
+html.dark {
+  background-color: #0f172a !important;
+}
+
+html {
+  background-color: #f8fafc !important;
+}
+
+/* =========================
+   MAPLIBRE CONTROLS STYLING
+   ========================= */
+
+/* MapLibre control groups - Light Mode (Default) */
+.maplibregl-ctrl-group {
+  background-color: white !important;
+  border: 1px solid rgba(0, 0, 0, 0.15) !important;
+  border-radius: 8px !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2) !important;
+}
+
+.maplibregl-ctrl-group button {
+  background-color: white !important;
+  color: #371f21 !important; /* gray-800 - darker for better contrast */
+  border: none !important;
+  width: 34px !important;
+  height: 34px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border-radius: 6px !important;
+  transition: all 0.2s !important;
+  font-weight: 600 !important; /* Make icons bolder */
+}
+
+.maplibregl-ctrl-group button:hover {
+  background-color: #f1f5f9 !important; /* slate-100 */
+  color: #0f172a !important; /* slate-900 */
+  transform: scale(1.05) !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1) !important;
+}
+
+.maplibregl-ctrl-group button:disabled {
+  background-color: #f3f4f6 !important; /* gray-100 */
+  color: #9ca3af !important; /* gray-400 */
+  cursor: not-allowed !important;
+}
+
+/* MapLibre control groups - Dark Mode - Enhanced contrast */
+html.dark .maplibregl-ctrl-group {
+  background-color: #0f172a !important; /* slate-900 - darker background */
+  border: 1px solid rgba(255, 255, 255, 0.3) !important; /* stronger border */
+  color: #f1f5f9 !important; /* slate-100 - lighter text */
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.5) !important; /* stronger shadow */
+}
+
+html.dark .maplibregl-ctrl-group button {
+  background-color: #0f172a !important; /* slate-900 */
+  color: #f1f5f9 !important; /* slate-100 - much lighter for contrast */
+  font-weight: 600 !important; /* Make icons bolder */
+}
+
+html.dark .maplibregl-ctrl-group button:hover {
+  background-color: #1e293b !important; /* slate-800 */
+  color: #ffffff !important; /* pure white for maximum contrast */
+  box-shadow: 0 1px 3px rgba(255, 255, 255, 0.1) !important;
+}
+
+html.dark .maplibregl-ctrl-group button:disabled {
+  background-color: #1e293b !important; /* slate-800 */
+  color: #64748b !important; /* slate-500 */
+}
+
+/* Attribution control */
+.maplibregl-ctrl-attrib {
+  background-color: rgba(255, 255, 255, 0.95) !important;
+  color: #1f2937 !important; /* gray-800 - darker for better contrast */
+  border-radius: 4px !important;
+  padding: 2px 6px !important;
+  font-size: 11px !important;
+  font-weight: 500 !important;
+  border: 1px solid rgba(0, 0, 0, 0.1) !important;
+}
+
+html.dark .maplibregl-ctrl-attrib {
+  background-color: rgba(15, 23, 42, 0.95) !important; /* slate-900/95 */
+  color: #f1f5f9 !important; /* slate-100 */
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+}
+
+.maplibregl-ctrl-attrib a {
+  color: #2563eb !important; /* blue-600 */
+  text-decoration: none !important;
+  font-weight: 600 !important;
+}
+
+html.dark .maplibregl-ctrl-attrib a {
+  color: #60a5fa !important; /* blue-400 */
+}
+
+.maplibregl-ctrl-attrib a:hover {
+  text-decoration: underline !important;
+  color: #1d4ed8 !important; /* blue-700 */
+}
+
+html.dark .maplibregl-ctrl-attrib a:hover {
+  color: #93c5fd !important; /* blue-300 */
+}
+
+/* Scale control */
+.maplibregl-ctrl-scale {
+  background-color: rgba(255, 255, 255, 0.95) !important;
+  color: #1f2937 !important; /* gray-800 */
+  border: 1px solid rgba(0, 0, 0, 0.15) !important;
+  border-radius: 4px !important;
+  padding: 2px 6px !important;
+  font-size: 11px !important;
+  font-weight: 600 !important;
+}
+
+html.dark .maplibregl-ctrl-scale {
+  background-color: rgba(15, 23, 42, 0.95) !important; /* slate-900/95 */
+  color: #f1f5f9 !important; /* slate-100 */
+  border: 1px solid rgba(255, 255, 255, 0.3) !important;
+}
+
+/* Popup styling */
+.maplibregl-popup-content {
+  background-color: white !important;
+  color: #1f2937 !important; /* gray-800 */
+  border-radius: 8px !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+  border: 1px solid rgba(0, 0, 0, 0.1) !important;
+}
+
+html.dark .maplibregl-popup-content {
+  background-color: #0f172a !important; /* slate-900 */
+  color: #f1f5f9 !important; /* slate-100 */
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5) !important;
+}
+
+.maplibregl-popup-tip {
+  border-top-color: white !important;
+}
+
+html.dark .maplibregl-popup-tip {
+  border-top-color: #0f172a !important; /* slate-900 */
+}
+
+
+/* =========================
+   LAYER CONTROL PANEL STYLING
+   ========================= */
+
+/* Ensure layer control panel has proper contrast in both modes */
+.layer-control-panel {
+  background-color: white !important;
+  color: #374151 !important; /* gray-700 */
+  border: 1px solid rgba(0, 0, 0, 0.1) !important;
+}
+
+html.dark .layer-control-panel {
+  background-color: #1e293b !important; /* slate-800 */
+  color: #e2e8f0 !important; /* slate-200 */
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+}
+
+/* Radio button styling for better visibility */
+input[type="radio"] {
+  accent-color: #3b82f6 !important; /* blue-600 */
+}
+
+html.dark input[type="radio"] {
+  accent-color: #60a5fa !important; /* blue-400 */
+}
+
+/* Enhanced contrast for layer control text */
+.layer-control-title {
+  color: #1f2937 !important; /* gray-800 */
+  font-weight: 700 !important;
+}
+
+html.dark .layer-control-title {
+  color: #f1f5f9 !important; /* slate-100 */
+}
+
+.layer-control-item {
+  color: #374151 !important; /* gray-700 */
+}
+
+html.dark .layer-control-item {
+  color: #e2e8f0 !important; /* slate-200 */
+}
+
+.layer-control-item:hover {
+  background-color: #f8fafc !important; /* slate-50 */
+}
+
+html.dark .layer-control-item:hover {
+  background-color: #334155 !important; /* slate-700 */
+}
+/* =========================
+   MAPLIBRE CONTROL ICONS - Enhanced Contrast
+   ========================= */
+
+/* Enhanced contrast for all control buttons in dark mode */
+html.dark .maplibregl-ctrl-group button {
+  background-color: #0f172a !important; /* slate-900 */
+  color: #ffffff !important; /* pure white */
+  border: 1px solid rgba(255, 255, 255, 0.3) !important;
+}
+
+html.dark .maplibregl-ctrl-group button:hover {
+  background-color: #1e293b !important; /* slate-800 */
+  color: #ffffff !important;
+  border-color: rgba(255, 255, 255, 0.5) !important;
+}
+
+/* Force white icons using CSS filters */
+html.dark .maplibregl-ctrl-icon {
+  filter: brightness(0) invert(1) !important;
+  opacity: 1 !important;
+}
+
+/* Specific overrides for zoom controls */
+html.dark .maplibregl-ctrl-zoom-in,
+html.dark .maplibregl-ctrl-zoom-out {
+  position: relative !important;
+}
+
+/* Custom + and - symbols for zoom controls */
+html.dark .maplibregl-ctrl-zoom-in::before {
+  content: '+' !important;
+  position: absolute !important;
+  top: 50% !important;
+  left: 50% !important;
+  transform: translate(-50%, -50%) !important;
+  color: #ffffff !important;
+  font-size: 20px !important;
+  font-weight: 300 !important;
+  line-height: 1 !important;
+  z-index: 10 !important;
+}
+
+html.dark .maplibregl-ctrl-zoom-out::before {
+  content: '−' !important;
+  position: absolute !important;
+  top: 50% !important;
+  left: 50% !important;
+  transform: translate(-50%, -50%) !important;
+  color: #ffffff !important;
+  font-size: 20px !important;
+  font-weight: 300 !important;
+  line-height: 1 !important;
+  z-index: 10 !important;
+}
+
+/* Hide original zoom icons when using custom symbols */
+html.dark .maplibregl-ctrl-zoom-in .maplibregl-ctrl-icon,
+html.dark .maplibregl-ctrl-zoom-out .maplibregl-ctrl-icon {
+  display: none !important;
+}
+
+/* Fullscreen control enhancement */
+html.dark .maplibregl-ctrl-fullscreen::before {
+  content: '⛶' !important;
+  position: absolute !important;
+  top: 50% !important;
+  left: 50% !important;
+  transform: translate(-50%, -50%) !important;
+  color: #ffffff !important;
+  font-size: 16px !important;
+  z-index: 10 !important;
+}
+
+html.dark .maplibregl-ctrl-shrink::before {
+  content: '⛷' !important;
+  position: absolute !important;
+  top: 50% !important;
+  left: 50% !important;
+  transform: translate(-50%, -50%) !important;
+  color: #ffffff !important;
+  font-size: 16px !important;
+  z-index: 10 !important;
+}
+
+html.dark .maplibregl-ctrl-fullscreen .maplibregl-ctrl-icon,
+html.dark .maplibregl-ctrl-shrink .maplibregl-ctrl-icon {
+  display: none !important;
+}
+
+/* Compass/rotation control */
+html.dark .maplibregl-ctrl-compass .maplibregl-ctrl-icon {
+  filter: brightness(0) invert(1) contrast(2) !important;
+}
+/* =========================
+   MAPLIBRE CONTROL ICONS - SVG Approach
+   ========================= */
+
+/* Custom SVG icons for better contrast in dark mode */
+html.dark .maplibregl-ctrl-zoom-in {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%23ffffff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cline x1='12' y1='5' x2='12' y2='19'%3E%3C/line%3E%3Cline x1='5' y1='12' x2='19' y2='12'%3E%3C/line%3E%3C/svg%3E") !important;
+  background-repeat: no-repeat !important;
+  background-position: center !important;
+  background-size: 18px 18px !important;
+}
+
+html.dark .maplibregl-ctrl-zoom-out {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%23ffffff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cline x1='5' y1='12' x2='19' y2='12'%3E%3C/line%3E%3C/svg%3E") !important;
+  background-repeat: no-repeat !important;
+  background-position: center !important;
+  background-size: 18px 18px !important;
+}
+
+html.dark .maplibregl-ctrl-fullscreen {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%23ffffff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='15,3 21,3 21,9'%3E%3C/polyline%3E%3Cpolyline points='9,21 3,21 3,15'%3E%3C/polyline%3E%3Cline x1='21' y1='3' x2='14' y2='10'%3E%3C/line%3E%3Cline x1='3' y1='21' x2='10' y2='14'%3E%3C/line%3E%3C/svg%3E") !important;
+  background-repeat: no-repeat !important;
+  background-position: center !important;
+  background-size: 16px 16px !important;
+}
+
+html.dark .maplibregl-ctrl-shrink {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%23ffffff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='4,14 10,14 10,20'%3E%3C/polyline%3E%3Cpolyline points='20,10 14,10 14,4'%3E%3C/polyline%3E%3Cline x1='14' y1='10' x2='21' y2='3'%3E%3C/line%3E%3Cline x1='3' y1='21' x2='10' y2='14'%3E%3C/line%3E%3C/svg%3E") !important;
+  background-repeat: no-repeat !important;
+  background-position: center !important;
+  background-size: 16px 16px !important;
+}
+
+/* Hide original icons completely when using SVG backgrounds */
+html.dark .maplibregl-ctrl-zoom-in .maplibregl-ctrl-icon,
+html.dark .maplibregl-ctrl-zoom-out .maplibregl-ctrl-icon,
+html.dark .maplibregl-ctrl-fullscreen .maplibregl-ctrl-icon,
+html.dark .maplibregl-ctrl-shrink .maplibregl-ctrl-icon {
+  display: none !important;
+}
+
+/* Remove the ::before content when using SVG */
+html.dark .maplibregl-ctrl-zoom-in::before,
+html.dark .maplibregl-ctrl-zoom-out::before,
+html.dark .maplibregl-ctrl-fullscreen::before,
+html.dark .maplibregl-ctrl-shrink::before {
+  display: none !important;
+}
+
+/* =========================
+   RANGE SLIDER STYLING
+   ========================= */
+
+/* Range slider track */
+input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  background: transparent;
+  cursor: pointer;
+}
+
+/* Webkit browsers (Chrome, Safari, Edge) */
+input[type="range"]::-webkit-slider-track {
+  background: #e2e8f0; /* slate-200 */
+  height: 4px;
+  border-radius: 2px;
+}
+
+html.dark input[type="range"]::-webkit-slider-track {
+  background: #475569; /* slate-600 */
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #3b82f6; /* blue-600 */
+  cursor: pointer;
+  border: 2px solid white;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+  margin-top: -5px;
+}
+
+html.dark input[type="range"]::-webkit-slider-thumb {
+  background: #60a5fa; /* blue-400 */
+  border-color: #1e293b; /* slate-800 */
+}
+
+input[type="range"]::-webkit-slider-thumb:hover {
+  background: #2563eb; /* blue-700 */
+  transform: scale(1.1);
+}
+
+html.dark input[type="range"]::-webkit-slider-thumb:hover {
+  background: #93c5fd; /* blue-300 */
+}
+
+/* Firefox */
+input[type="range"]::-moz-range-track {
+  background: #e2e8f0; /* slate-200 */
+  height: 4px;
+  border-radius: 2px;
+}
+
+html.dark input[type="range"]::-moz-range-track {
+  background: #475569; /* slate-600 */
+}
+
+input[type="range"]::-moz-range-thumb {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #3b82f6; /* blue-600 */
+  cursor: pointer;
+  border: 2px solid white;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+html.dark input[type="range"]::-moz-range-thumb {
+  background: #60a5fa; /* blue-400 */
+  border-color: #1e293b; /* slate-800 */
+}
+
+input[type="range"]::-moz-range-thumb:hover {
+  background: #2563eb; /* blue-700 */
+  transform: scale(1.1);
+}
+
+html.dark input[type="range"]::-moz-range-thumb:hover {
+  background: #93c5fd; /* blue-300 */
+}
+
+/* Checkbox styling for layer control */
+input[type="checkbox"] {
+  accent-color: #3b82f6; /* blue-600 */
+  cursor: pointer;
+}
+
+html.dark input[type="checkbox"] {
+  accent-color: #60a5fa; /* blue-400 */
 }
