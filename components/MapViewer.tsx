@@ -295,9 +295,9 @@ export const MapViewer: React.FC<MapViewerProps> = ({
       map.current.addSource('wms-batas-rt', {
         type: 'raster',
         tiles: [
-          '/api/geoserver/webgis/wms?service=WMS&version=1.1.0&request=GetMap&layers=webgis:BATAS_RT_SEBANJARMASIN&bbox={bbox-epsg-3857}&width=768&height=642&srs=EPSG:3857&format=image/png&transparent=true'
+          '/api/geoserver/webgis/wms?service=WMS&version=1.1.0&request=GetMap&layers=webgis:BATAS_RT_SEBANJARMASIN&bbox={bbox-epsg-3857}&width=256&height=256&srs=EPSG:3857&format=image/png&transparent=true'
         ],
-        tileSize: 256,
+        tileSize: 512,
         scheme: 'xyz'
       });
 
@@ -440,9 +440,9 @@ export const MapViewer: React.FC<MapViewerProps> = ({
         map.current.addSource('wms-batas-rt', {
           type: 'raster',
           tiles: [
-            '/api/geoserver/webgis/wms?service=WMS&version=1.1.0&request=GetMap&layers=webgis:BATAS_RT_SEBANJARMASIN&bbox={bbox-epsg-3857}&width=768&height=642&srs=EPSG:3857&format=image/png&transparent=true'
+            '/api/geoserver/webgis/wms?service=WMS&version=1.1.0&request=GetMap&layers=webgis:BATAS_RT_SEBANJARMASIN&bbox={bbox-epsg-3857}&width=256&height=256&srs=EPSG:3857&format=image/png&transparent=true'
           ],
-          tileSize: 256,
+          tileSize: 512,
           scheme: 'xyz'
         });
       }
